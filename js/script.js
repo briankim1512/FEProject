@@ -16,6 +16,7 @@ for (i in tmpLocations["locations"]) {
     tmpLocations["locations"][i]["classID"]=
         tmpLocations["locations"][i]["address"].replace(/\s|,/g, "");
 }
+    //Knockout Presenter initializer
 function ViewModel() {
     var self = this;
     self.locations = tmpLocations["locations"];
@@ -48,12 +49,6 @@ function ViewModel() {
     };
     //Function to filter out visible addresses
     self.filterAddresses = function() {
-        if (self.filterInput=="") {
-            for (i in self.locations) {
-                $("."+self.locations[i]["classID"]).css("display", "block");
-            }
-            return;
-        }
         for (i in self.locations) {
             if (self.locations[i]["address"].search(self.filterInput())==-1) {
                 $("."+self.locations[i]["classID"]).css("display", "none");
