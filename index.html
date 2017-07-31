@@ -15,11 +15,16 @@
                 <h1 id="title">Project Iron</h1>
             </div>
         </header>
-        <aside>
+        <aside data-bind="visible: showAside">
             <div id="asidePad">
                 <div id="filterDiv">
-                    <input type="text" id="filter"></input>
+                    <input type="text" id="filter" bind-data="textInput: filterInput"></input>
                     <button id="filterB">Filter</button>
+                </div>
+                <div id="resultDiv">
+                    <ul data-bind="foreach: locations">
+                        <li data-bind="text: address, attr: { class: classID }, click: $parent.highlight"></li>
+                    </ul>
                 </div>
             </div>
         </aside>
