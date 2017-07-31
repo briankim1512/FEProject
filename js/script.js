@@ -52,6 +52,7 @@ function InitMap() {
             populateInfo(this, infoWindow);
         });
     }
+    //Renders an infowindow on the selected address or marker
     populateInfo = function (marker, infowindow) {
         if (infowindow.marker != marker) {
             infowindow.setContent('<div>' + marker.title + '</div>');
@@ -86,8 +87,6 @@ function ViewModel() {
         for (i in self.locations) {
             if (self.locations[i]["classID"]==data["classID"]) {
                 for (j in marker) {
-                    console.log(marker[j].title);
-                    console.log(self.locations[i]["address"]);
                     if (self.locations[i]["address"]==marker[j].title) {
                         populateInfo(marker[j], infoWindow);
                     }
@@ -112,6 +111,7 @@ function ViewModel() {
     self.resetFilter = function() {
         for (i in self.locations) {
             $("."+self.locations[i]["classID"]).css("display", "block");
+            $("."+self.locations[i]["classID"]).css("background-color", "black");
         }
     }
 }
