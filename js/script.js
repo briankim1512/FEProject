@@ -1,5 +1,8 @@
 //Model
 var map;
+var marker;
+var infoWindow;
+var populateInfo;
 var tmpLocations = {
     "locations": [
         { "address": "51 Belmont St, Boston, MA 02129"},
@@ -11,10 +14,50 @@ var tmpLocations = {
 }
 
 //Presenter
-    //Parses location data to allow classes for the entries
+    //Parses location data to allow classes and coordinates for the entries
 for (i in tmpLocations["locations"]) {
     tmpLocations["locations"][i]["classID"]=
         tmpLocations["locations"][i]["address"].replace(/\s|,/g, "");
+    (function(i){
+        $.getJSON("https://maps.googleapis.com/maps/api/geocode/json"+
+        "?address="+
+        tmpLocations["locations"][i]["address"].replace(/\s/g, "+")+
+        "&key=AIzaSyBqWKH8t9zkyH1hwW69exWJ_jnLUqtq7Yg", function(data){
+            tmpLocations["locations"][i]["lat"]=
+                data["results"][0]["geometry"]["location"]["lat"];
+            tmpLocations["locations"][i]["lng"]=
+                data["results"][0]["geometry"]["location"]["lng"];
+        });
+    })(i);
+}
+    //Initialize the map
+function InitMap() {
+    var self = this;
+    map = new google.maps.Map(document.getElementById('map'), {
+        center: {lat: 42.3782, lng: -71.0602},
+        zoom: 15,
+    });
+    //Creates markers for each entry within the database
+    marker = [];
+    infoWindow = new google.maps.InfoWindow();
+    for (i in tmpLocations["locations"]) {
+        marker[i] = new google.maps.Marker({
+            position: {lat: tmpLocations["locations"][i]["lat"],
+                lng: tmpLocations["locations"][i]["lng"]},
+            map: map,
+            title: tmpLocations["locations"][i]["address"],
+            animation: google.maps.Animation.DROP
+        });
+        marker[i].addListener('click', function() {
+            populateInfo(this, infoWindow);
+        });
+    }
+    populateInfo = function (marker, infowindow) {
+        if (infowindow.marker != marker) {
+            infowindow.setContent('<div>' + marker.title + '</div>');
+            infowindow.open(map, marker);
+        }
+    }
 }
     //Knockout Presenter initializer
 function ViewModel() {
@@ -42,6 +85,13 @@ function ViewModel() {
         $("."+data["classID"]).css("background-color", "grey");
         for (i in self.locations) {
             if (self.locations[i]["classID"]==data["classID"]) {
+                for (j in marker) {
+                    console.log(marker[j].title);
+                    console.log(self.locations[i]["address"]);
+                    if (self.locations[i]["address"]==marker[j].title) {
+                        populateInfo(marker[j], infoWindow);
+                    }
+                }
                 continue;
             }
             $("."+self.locations[i]["classID"]).css("background-color", "black");
@@ -66,10 +116,3 @@ function ViewModel() {
     }
 }
 ko.applyBindings(new ViewModel);
-    //Initialize the map
-function initMap() {
-    map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: 32.783, lng: -79.94},
-        zoom: 15,
-    });
-}

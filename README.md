@@ -11,3 +11,6 @@ should be presented to the user.
 Addresses have been taken from available housings on Zillow.com
 
 All code has been inspired from knockout/jquery/google documentations
+
+https://stackoverflow.com/questions/15347750/getjson-and-for-loop-issue 
+helped with some bug I had with getJSON
