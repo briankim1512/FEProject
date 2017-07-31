@@ -1,6 +1,9 @@
 {
     "locations": [
-        { "example": "holdup"},
-        { "example": "waitup"}
+        { "address": "51 Belmont St, Boston, MA 02129"},
+        { "address": "21 Tremont St UNIT B, Boston, MA 02129"},
+        { "address": "42 8th St, Boston, MA 02129"},
+        { "address": "10 Lexington Ave, Boston, MA 02129"},
+        { "address": "47 Harvard St APT B101, Boston, MA 02129"}
     ]
 }

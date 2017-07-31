@@ -18,8 +18,9 @@
         <aside data-bind="visible: showAside">
             <div id="asidePad">
                 <div id="filterDiv">
-                    <input type="text" id="filter" bind-data="textInput: filterInput"></input>
-                    <button id="filterB">Filter</button>
+                    <input type="text" id="filter"
+                        data-bind="textInput: filterInput, enterkey: filterAddresses"></input>
+                    <button id="filterB" data-bind="click: filterAddresses">Filter</button>
                 </div>
                 <div id="resultDiv">
                     <ul data-bind="foreach: locations">
@@ -27,6 +28,7 @@
                     </ul>
                 </div>
             </div>
+            <button id="resetB" data-bind="click: resetFilter">Reset Filter</button>
         </aside>
         <div id="map"></div>
         <script src="js/script.js"></script>

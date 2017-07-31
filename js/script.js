@@ -46,6 +46,29 @@ function ViewModel() {
             $("."+self.locations[i]["classID"]).css("background-color", "black");
         }
     };
+    //Function to filter out visible addresses
+    self.filterAddresses = function() {
+        if (self.filterInput=="") {
+            for (i in self.locations) {
+                $("."+self.locations[i]["classID"]).css("display", "block");
+            }
+            return;
+        }
+        for (i in self.locations) {
+            if (self.locations[i]["address"].search(self.filterInput())==-1) {
+                $("."+self.locations[i]["classID"]).css("display", "none");
+            }
+            else {
+                $("."+self.locations[i]["classID"]).css("display", "block");
+            }
+        }
+        self.filterInput()
+    };
+    self.resetFilter = function() {
+        for (i in self.locations) {
+            $("."+self.locations[i]["classID"]).css("display", "block");
+        }
+    }
 }
 ko.applyBindings(new ViewModel);
     //Initialize the map

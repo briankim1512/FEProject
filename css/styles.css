@@ -61,8 +61,19 @@ li {
     position: relative;
     right: 2px;
 }
-#resultDiv{
+#resultDiv {
     width: 100%;
+}
+#resetB {
+    position: absolute;
+    bottom: 15px;
+    left: 5px;
+    width: 19%;
+    background-color: #4286f4;
+    background: linear-gradient(#4286f4, #336cc6);
+    color: white;
+    border: none;
+    height: 40px;
 }
 #asidePad {
     padding: 3px;
