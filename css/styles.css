@@ -30,8 +30,25 @@ aside {
     width: 80%;
     margin-left: 20%;
 }
+#filterDiv {
+    margin-top: 10px;
+}
 #filter {
-    width: 97%;
+    width: 70%;
+    position: relative;
+    left: 2px;
+}
+#filterB {
+    width: 25%;
+    background-color: #4286f4;
+    background: linear-gradient(#4286f4, #336cc6);
+    color: white;
+    border: none;
+    padding: 3px;
+    padding-right: 8px;
+    padding-left: 8px;
+    position: relative;
+    right: 2px;
 }
 #asidePad {
     padding: 3px;
