@@ -3,6 +3,7 @@ var map;
 var marker;
 var infoWindow;
 var populateInfo;
+var resetFilter;
 var tmpLocations = {
     "locations": [
         { "address": "51 Belmont St, Boston, MA 02129"},
@@ -50,6 +51,7 @@ function InitMap() {
         });
         marker[i].addListener('click', function() {
             populateInfo(this, infoWindow);
+            resetFilter();
         });
     }
     //Renders an infowindow on the selected address or marker
@@ -108,7 +110,7 @@ function ViewModel() {
         }
         self.filterInput()
     };
-    self.resetFilter = function() {
+    resetFilter = function() {
         for (i in self.locations) {
             $("."+self.locations[i]["classID"]).css("display", "block");
             $("."+self.locations[i]["classID"]).css("background-color", "black");
