@@ -1,15 +1,14 @@
 //Model
 //Global variables needed to make the app work
-var map;
-var marker;
-var locations;
-var infoWindow;
-var populateInfo;
-var resetFilter;
+let map;
+let marker;
+let locations;
+let infoWindow;
+let populateInfo;
+let resetFilter;
 //This was made as if the server this application ran on served
-//a JSON file (/js/json/locations.json) after I called a $.getJSON
-//request...
-var tmpLocations = {
+//a JSON file (/js/json/locations.json) after I called a $.getJSON request...
+let tmpLocations = {
     "locations": [
         { "address": "51 Belmont St, Boston, MA 02129"},
         { "address": "21 Tremont St UNIT B, Boston, MA 02129"},
@@ -99,6 +98,10 @@ function ViewModel() {
                 for (j in marker) {
                     if (self.locations()[i]["address"]==marker[j].title) {
                         populateInfo(marker[j], infoWindow);
+                        marker[j].setAnimation(google.maps.Animation.BOUNCE);
+                        setTimeout(function() {
+                            marker[j].setAnimation(null);
+                        }, 700)
                         break;
                     }
                 }
@@ -133,6 +136,7 @@ function ViewModel() {
         }
         for (i in marker) {
             marker[i].setMap(map);
+            marker[i].setAnimation(null);
         }
         infoWindow.close();
         map.setCenter({lat: 42.3782, lng: -71.0602});
@@ -159,10 +163,16 @@ function InitMap() {
             title: tmpLocations["locations"][i]["address"],
             animation: google.maps.Animation.DROP,
         });
-        marker[i].addListener('click', function() {
-            resetFilter();
-            populateInfo(this, infoWindow);
-        });
+        (function(i){
+            marker[i].addListener('click', function() {
+                resetFilter();
+                populateInfo(this, infoWindow);
+                marker[i].setAnimation(google.maps.Animation.BOUNCE);
+                setTimeout(function() {
+                    marker[i].setAnimation(null);
+                }, 700)
+            });
+        })(i);
     }
     //Renders an infowindow on the selected address or marker
     populateInfo = function (marker, infowindow) {
