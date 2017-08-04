@@ -104,7 +104,7 @@ function ViewModel() {
     //Function to highlight the clicked address
     self.highlight = function(data) {
         $("."+data.classID).css("background-color", "grey");
-        for (i in self.locations()) {
+        for (let i = 0;  i < self.locations().length; i++) {
             if (self.locations()[i].classID==data.classID) {
                 for (let j = 0; j < marker.length; j++) {
                     if (self.locations()[i].address==marker[j].title) {
