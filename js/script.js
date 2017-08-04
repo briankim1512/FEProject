@@ -171,6 +171,9 @@ function InitMap() {
             title: tmpLocations.locations[i].address,
             animation: google.maps.Animation.DROP,
         });
+        setMarkerListener(i);
+    }
+    function setMarkerListener(i) {
         marker[i].addListener('click', function() {
             resetFilter();
             populateInfo(this, infoWindow);
