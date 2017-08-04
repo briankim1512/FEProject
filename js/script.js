@@ -19,6 +19,11 @@ let tmpLocations = {
         { "address": "47 Harvard St APT B101, Boston, MA 02129"}
     ]
 };
+//A certain function to stop animations used in both google and KO
+//viewmodels
+function stopAnimation(j) {
+    marker[j].setAnimation(null);
+}
 //Presenter
     //Knockout Presenter initializer
 function ViewModel() {
@@ -29,10 +34,7 @@ function ViewModel() {
     self.filterInput = ko.observable("");
     //Parses location data to allow classes and coordinates for the entries
     //Also appends FourSquare data for more information about the place
-    for (let i = 0; i < self.locations().length; i++) {
-        self.locations()[i].classID =
-            self.locations()[i].address.replace(/\s|,/g, "");
-        //(function(i){
+    function setCoord(i) {
         $.ajax({
             url: "https://maps.googleapis.com/maps/api/geocode/json"+
             "?address="+
@@ -48,6 +50,8 @@ function ViewModel() {
                 console.log('Could not get coordinates');
             }
         });
+    }
+    function setFInfo(i) {
         $.ajax({
             url: 'https://api.foursquare.com/v2/venues/explore?near='+
                 self.locations()[i].address.replace(/\s/g, "+")+
@@ -75,7 +79,12 @@ function ViewModel() {
                     'FourSquare data...';
             }
         });
-        //})(i);
+    }
+    for (let i = 0; i < self.locations().length; i++) {
+        self.locations()[i].classID =
+            self.locations()[i].address.replace(/\s|,/g, "");
+        setCoord(i);
+        setFInfo(i);
     }
     //Function to change the visibility of the sidebar
     self.changeSideStatus = function() {
@@ -101,9 +110,7 @@ function ViewModel() {
                     if (self.locations()[i].address==marker[j].title) {
                         populateInfo(marker[j], infoWindow);
                         marker[j].setAnimation(google.maps.Animation.BOUNCE);
-                        setTimeout(function(){
-                            marker[j].setAnimation(null)
-                        }, 700);
+                        setTimeout(stopAnimation, 700, j);
                         break;
                     }
                 }
@@ -168,9 +175,7 @@ function InitMap() {
             resetFilter();
             populateInfo(this, infoWindow);
             marker[i].setAnimation(google.maps.Animation.BOUNCE);
-            setTimeout(function() {
-                marker[i].setAnimation(null);
-            }, 700);
+            setTimeout(stopAnimation, 700, i);
         });
     }
     //Renders an infowindow on the selected address or marker
