@@ -29,57 +29,57 @@ function ViewModel() {
     self.filterInput = ko.observable("");
     //Parses location data to allow classes and coordinates for the entries
     //Also appends FourSquare data for more information about the place
-    for (i = 0; i < self.locations().length; i++) {
+    for (let i = 0; i < self.locations().length; i++) {
         self.locations()[i].classID =
             self.locations()[i].address.replace(/\s|,/g, "");
-        (function(i){
-            $.ajax({
-                url: "https://maps.googleapis.com/maps/api/geocode/json"+
-                "?address="+
+        //(function(i){
+        $.ajax({
+            url: "https://maps.googleapis.com/maps/api/geocode/json"+
+            "?address="+
                 self.locations()[i].address.replace(/\s/g, "+")+
                 "&key=AIzaSyBqWKH8t9zkyH1hwW69exWJ_jnLUqtq7Yg",
-                success: function(data){
-                    self.locations()[i].lat=
-                        data.results[0].geometry.location.lat;
-                    self.locations()[i].lng=
-                        data.results[0].geometry.location.lng;
-                },
-                error: function() {
-                    console.log('Could not get coordinates');
-                }
-            });
-            $.ajax({
-                url: 'https://api.foursquare.com/v2/venues/explore?near='+
-                    self.locations()[i].address.replace(/\s/g, "+")+
-                    '&v=20170101'+
-                    '&client_id=KW3OM1IGPJMQHKY4UDEK2N54F1EGYABQR1A2CO0KKSDRWGTT'+
-                    '&client_secret=FRKIO5OUJPY3EX4W3Q2SRELXLLK23ZI4QTJZDCPY50VXSC4O',
-                success: function(data) {
-                    self.locations()[i].fSquare += "<h3>Nearby place info " +
-                        "made possible by FourSquare</h3>";
-                    var rSquare = data.response.groups[0].items;
-                    for(j = 0; j < rSquare.length; j++) {
-                        self.locations()[i].fSquare += '<div><h4>' +
-                            rSquare[j].venue.name + '</h4>' +
-                            rSquare[j].tips[0].text + '<br>' +
-                            '</div><br>';
-                        if(j>1) {
-                            break;
-                        }
+            success: function(data){
+                self.locations()[i].lat =
+                    data.results[0].geometry.location.lat;
+                self.locations()[i].lng =
+                    data.results[0].geometry.location.lng;
+            },
+            error: function() {
+                console.log('Could not get coordinates');
+            }
+        });
+        $.ajax({
+            url: 'https://api.foursquare.com/v2/venues/explore?near='+
+                self.locations()[i].address.replace(/\s/g, "+")+
+                '&v=20170101'+
+                '&client_id=KW3OM1IGPJMQHKY4UDEK2N54F1EGYABQR1A2CO0KKSDRWGTT'+
+                '&client_secret=FRKIO5OUJPY3EX4W3Q2SRELXLLK23ZI4QTJZDCPY50VXSC4O',
+            success: function(data) {
+                self.locations()[i].fSquare = "<h3>Nearby place info " +
+                    "made possible by FourSquare</h3>";
+                var rSquare = data.response.groups[0].items;
+                for(j = 0; j < rSquare.length; j++) {
+                    self.locations()[i].fSquare += '<div><h4>' +
+                        rSquare[j].venue.name + '</h4>' +
+                        rSquare[j].tips[0].text + '<br>' +
+                        '</div><br>';
+                    if(j>1) {
+                        break;
                     }
-                    self.locations()[i].fSquare=
-                        self.locations()[i].fSquare.replace('undefined', '');
-                },
-                error: function() {
-                    self.locations()[i].fSquare = 'Could not load ' +
-                        'FourSquare data...';
                 }
-            });
-        })(i);
+                self.locations()[i].fSquare=
+                    self.locations()[i].fSquare.replace('undefined', '');
+            },
+            error: function() {
+                self.locations()[i].fSquare = 'Could not load ' +
+                    'FourSquare data...';
+            }
+        });
+        //})(i);
     }
     //Function to change the visibility of the sidebar
     self.changeSideStatus = function() {
-        if (self.showAside()==true) {
+        if (self.showAside()===true) {
             self.showAside(false);
             $("#map").css("width", "100%");
             $("#map").css("margin-left", "0%");
@@ -97,12 +97,12 @@ function ViewModel() {
         $("."+data.classID).css("background-color", "grey");
         for (i in self.locations()) {
             if (self.locations()[i].classID==data.classID) {
-                for (j in marker) {
+                for (let j = 0; j < marker.length; j++) {
                     if (self.locations()[i].address==marker[j].title) {
                         populateInfo(marker[j], infoWindow);
                         marker[j].setAnimation(google.maps.Animation.BOUNCE);
-                        setTimeout(function() {
-                            marker[j].setAnimation(null);
+                        setTimeout(function(){
+                            marker[j].setAnimation(null)
                         }, 700);
                         break;
                     }
@@ -156,7 +156,7 @@ function InitMap() {
     //Creates markers for each entry within the database
     marker = [];
     infoWindow = new google.maps.InfoWindow();
-    for (i = 0; i < tmpLocations.locations.length; i++) {
+    for (let i = 0; i < tmpLocations.locations.length; i++) {
         marker[i] = new google.maps.Marker({
             position: {lat: tmpLocations.locations[i].lat,
                 lng: tmpLocations.locations[i].lng},
@@ -164,16 +164,14 @@ function InitMap() {
             title: tmpLocations.locations[i].address,
             animation: google.maps.Animation.DROP,
         });
-        (function(i){
-            marker[i].addListener('click', function() {
-                resetFilter();
-                populateInfo(this, infoWindow);
-                marker[i].setAnimation(google.maps.Animation.BOUNCE);
-                setTimeout(function() {
-                    marker[i].setAnimation(null);
-                }, 700);
-            });
-        })(i);
+        marker[i].addListener('click', function() {
+            resetFilter();
+            populateInfo(this, infoWindow);
+            marker[i].setAnimation(google.maps.Animation.BOUNCE);
+            setTimeout(function() {
+                marker[i].setAnimation(null);
+            }, 700);
+        });
     }
     //Renders an infowindow on the selected address or marker
     populateInfo = function (marker, infowindow) {
@@ -181,7 +179,7 @@ function InitMap() {
             for(i in myViewModel.locations()) {
                 if(myViewModel.locations()[i].address==marker.title) {
                     iSquare = myViewModel.locations()[i].fSquare;
-                    if (iSquare==undefined) {
+                    if (iSquare===undefined) {
                         iSquare = "<br>Please wait a moment and try again";
                     }
                 }
