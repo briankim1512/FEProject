@@ -32,10 +32,11 @@
                 <button id="resetB" data-bind="click: resetFilter">Reset Filter</button>
             </div>
         </aside>
-        <div id="map"></div>
+        <div id="map" data-bind="text: mapError"></div>
         <script src="js/script.js"></script>
         <script async defer
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqWKH8t9zkyH1hwW69exWJ_jnLUqtq7Yg&v=3&callback=InitMap">
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqWKH8t9zkyH1hwW69exWJ_jnLUqtq7Yg&v=3&callback=InitMap"
+            onerror="mapError()">
         </script>
     </body>
 </html>

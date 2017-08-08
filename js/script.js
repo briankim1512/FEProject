@@ -29,9 +29,9 @@ function stopAnimation(j) {
 function ViewModel() {
     var self = this;
     self.locations = ko.observable(tmpLocations.locations);
-    self.example = ko.observable("will this work?");
     self.showAside = ko.observable(true);
     self.filterInput = ko.observable("");
+    self.mapError = ko.observable("");
     //Parses location data to allow classes and coordinates for the entries
     //Also appends FourSquare data for more information about the place
     function setCoord(i) {
@@ -47,7 +47,7 @@ function ViewModel() {
                     data.results[0].geometry.location.lng;
             },
             error: function() {
-                console.log('Could not get coordinates');
+                alert('Could not get coordinates for marker '+i);
             }
         });
     }
@@ -199,4 +199,7 @@ function InitMap() {
             map.setCenter(marker.getPosition());
         }
     };
+}
+function mapError() {
+    alert('Google maps failed to load, please alert the devs');
 }
