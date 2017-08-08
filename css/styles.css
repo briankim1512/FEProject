@@ -15,6 +15,7 @@ header {
 aside {
     float: left;
     width: 20%;
+    height: 95%;
 }
 ul {
     list-style-type: none;
