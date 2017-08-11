@@ -80,11 +80,15 @@ function ViewModel() {
             }
         });
     }
+    function setVisible(i) {
+        self.locations()[i].show = ko.observable(true);
+    }
     for (let i = 0; i < self.locations().length; i++) {
         self.locations()[i].classID =
             self.locations()[i].address.replace(/\s|,/g, "");
         setCoord(i);
         setFInfo(i);
+        setVisible(i);
     }
     //Function to change the visibility of the sidebar
     self.changeSideStatus = function() {
@@ -123,10 +127,10 @@ function ViewModel() {
     self.filterAddresses = function() {
         for (i in self.locations()) {
             if (self.locations()[i].address.search(self.filterInput())==-1) {
-                $("."+self.locations()[i].classID).css("display", "none");
+                self.locations()[i].show(false);
             }
             else {
-                $("."+self.locations()[i].classID).css("display", "block");
+                self.locations()[i].show(true);
             }
         }
         for (i in marker) {
@@ -140,7 +144,7 @@ function ViewModel() {
     };
     resetFilter = function() {
         for (i = 0; i < self.locations().length; i++) {
-            $("."+self.locations()[i].classID).css("display", "block");
+            self.locations()[i].show(true);
             $("."+self.locations()[i].classID).css("background-color", "black");
         }
         for (i = 0; i < marker.length; i++) {
@@ -174,7 +178,6 @@ function InitMap() {
         }
     }
     function setMarkerInfo(i) {
-        console.log(myViewModel.locations()[i].lat);
         marker[i] = new google.maps.Marker({
             position: {lat: myViewModel.locations()[i].lat,
                 lng: myViewModel.locations()[i].lng},

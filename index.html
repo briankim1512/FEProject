@@ -27,7 +27,7 @@
                 </div>
                 <div id="resultDiv">
                     <ul data-bind="foreach: locations">
-                        <li data-bind="text: address, attr: { class: classID }, click: $parent.highlight"></li>
+                        <li data-bind="text: address, attr: { class: classID }, click: $parent.highlight, visible: show"></li>
                     </ul>
                 </div>
                 <button id="resetB" data-bind="click: resetFilter">Reset Filter</button>
