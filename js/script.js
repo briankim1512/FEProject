@@ -164,16 +164,17 @@ function InitMap() {
     marker = [];
     infoWindow = new google.maps.InfoWindow();
     for (let i = 0; i < myViewModel.locations().length; i++) {
-        if (myViewModel.locations()[i].lat===undefined){
-            //Wait for values to be set from myViewModel
-            setTimeout(setMarkerInfo, 200, i);
+        if (myViewModel.locations()[i].lat===undefined) {
+            //If it is the user's first time loading, make sure vars are set
+            setTimeout(setMarkerInfo, 1000, i);
         }
         else {
-            //If the value is already set, set info immediately
+            //If it isn't the user's first time, load vars
             setMarkerInfo(i);
         }
     }
     function setMarkerInfo(i) {
+        console.log(myViewModel.locations()[i].lat);
         marker[i] = new google.maps.Marker({
             position: {lat: myViewModel.locations()[i].lat,
                 lng: myViewModel.locations()[i].lng},
