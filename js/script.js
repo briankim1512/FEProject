@@ -163,12 +163,12 @@ function InitMap() {
     //Creates markers for each entry within the database
     marker = [];
     infoWindow = new google.maps.InfoWindow();
-    for (let i = 0; i < tmpLocations.locations.length; i++) {
+    for (let i = 0; i < myViewModel.locations().length; i++) {
         marker[i] = new google.maps.Marker({
-            position: {lat: tmpLocations.locations[i].lat,
-                lng: tmpLocations.locations[i].lng},
+            position: {lat: myViewModel.locations()[i].lat,
+                lng: myViewModel.locations()[i].lng},
             map: map,
-            title: tmpLocations.locations[i].address,
+            title: myViewModel.locations()[i].address,
             animation: google.maps.Animation.DROP,
         });
         setMarkerListener(i);
